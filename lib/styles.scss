@@ -1,0 +1,54 @@
+$font: "Open Sans", sans-serif;
+
+
+h1 {
+  font-size: 90px;
+  font-family: $font;
+  margin-top: 10px;
+}
+
+h2 {
+  font-size: 30px;;
+  font-family: $font;
+}
+
+input {
+  height: 50px;
+  width: 350px;
+  border-width: medium;
+  border-radius: 30vw;
+  border-style: solid;
+}
+
+body {
+display: inline;
+text-align: center;
+}
+
+ul {
+  list-style-type: none;
+}
+
+input,
+input::-webkit-input-placeholder {
+  font-size: 40px;
+  text-align: center;
+}
+
+button,
+button {
+  height: 40px;
+  width: 80px;
+  margin-bottom: 40px;
+  border-width: medium;
+  border: none;
+  border-radius: 30vw;
+  border-style: solid;
+  background-color: black;
+  color: white;
+}
+
+li {
+  font-size: 40px;
+  font-family: $font;
+}

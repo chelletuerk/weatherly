@@ -21,6 +21,10 @@ module.exports = {
       { test: /\.scss$/, loader: 'style!css!sass' },
     ],
   },
+  sassLoader: {
+    sourceMap: true
+  },
+}
   resolve: {
     extensions: ['', '.js', '.jsx', '.json', '.scss', '.css'],
   },
