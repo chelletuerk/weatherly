@@ -1,15 +1,20 @@
-$font: "Open Sans", sans-serif;
+$font-title: 'Megrim', cursive;
+$font: 'Open Sans Condensed', sans-serif;
 
 
 h1 {
-  font-size: 90px;
-  font-family: $font;
+  font-size: 130px;
+  font-family: $font-title;
   margin-top: 10px;
+  margin: auto;
+  color: white;
 }
 
 h2 {
   font-size: 30px;;
   font-family: $font;
+  margin-top: 40px;
+  color: white;
 }
 
 input {
@@ -23,22 +28,35 @@ input {
 body {
 display: inline;
 text-align: center;
+background-color: black;
 }
 
 ul {
   list-style-type: none;
+  width: 500px;
+  margin: auto;
+}
+
+div {
+  margin: auto
 }
 
 input,
 input::-webkit-input-placeholder {
   font-size: 40px;
   text-align: center;
+  font-family: $font;
 }
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
 
 button,
 button {
   height: 40px;
-  width: 80px;
+  width: 120px;
+  margin-top: 30px;
   margin-bottom: 40px;
   border-width: medium;
   border: none;
@@ -46,9 +64,31 @@ button {
   border-style: solid;
   background-color: black;
   color: white;
+  font-family: $font;
+  font-size: 15px;
 }
 
 li {
   font-size: 40px;
   font-family: $font;
+  padding: 20px;
+  margin-right: 7%;
+  border: solid;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 20vw;
 }
+
+
+// html {
+//   background: url('images/volcano.png') no-repeat center center fixed;
+//   -webkit-background-size: cover;
+//   -moz-background-size: cover;
+//   -o-background-size: cover;
+//   background-size: cover;
+// }
+// //
+// html {
+//   background-image: url('images/Weather.png');
+//   background-repeat: no-repeat;
+// }
