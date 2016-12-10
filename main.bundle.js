@@ -29480,7 +29480,7 @@
 	          weatherLocationList = _state.weatherLocationList,
 	          weather = _state.weather;
 
-	      jQuery.getJSON('http://api.wunderground.com/api/cfa60fe930db844e/forecast/q/' + this.state.location + '.json').then(function (data) {
+	      jQuery.getJSON('https://api.wunderground.com/api/cfa60fe930db844e/forecast/q/' + this.state.location + '.json').then(function (data) {
 	        console.log(data);
 	        var newWeather = data.forecast.txt_forecast.forecastday[0].fcttext;
 	        this.setState({
