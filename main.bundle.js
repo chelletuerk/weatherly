@@ -29483,6 +29483,10 @@
 	      jQuery.getJSON('https://api.wunderground.com/api/cfa60fe930db844e/forecast/q/' + this.state.location + '.json').then(function (data) {
 	        console.log(data);
 	        var newWeather = data.forecast.txt_forecast.forecastday[0].fcttext;
+	        if (!weather) {
+	          alert('Invalid Zip Code');
+	        }
+	        // localStorage.setItem('newWeather')
 	        this.setState({
 	          location: '',
 	          weatherLocationList: [location].concat(_toConsumableArray(weatherLocationList)),
@@ -29573,7 +29577,7 @@
 
 
 	// module
-	exports.push([module.id, "h1 {\n  font-size: 200px;\n  font-family: \"Megrim\", cursive;\n  margin-top: 10px;\n  margin: auto;\n  color: white; }\n\nh2 {\n  font-size: 30px;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  margin-top: 40px;\n  color: white; }\n\ninput {\n  height: 50px;\n  width: 350px;\n  border-width: medium;\n  border-radius: 30vw;\n  border-style: solid; }\n\nbody {\n  display: inline;\n  text-align: center;\n  background-color: black; }\n\nul {\n  list-style-type: none;\n  width: 500px;\n  margin: auto; }\n\ndiv {\n  margin: auto; }\n\ninput,\ninput::-webkit-input-placeholder {\n  font-size: 40px;\n  text-align: center;\n  font-family: \"Open Sans Condensed\", sans-serif; }\n\ninput[type=number]::-webkit-inner-spin-button {\n  -webkit-appearance: none; }\n\nbutton,\nbutton {\n  height: 40px;\n  width: 120px;\n  margin-top: 30px;\n  margin-bottom: 40px;\n  border-width: medium;\n  border: none;\n  border-radius: 30vw;\n  border-style: solid;\n  background-color: black;\n  color: white;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  font-size: 15px; }\n\nli {\n  font-size: 40px;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  padding: 20px;\n  margin-right: 7%;\n  border: solid;\n  margin-top: 20px;\n  background-color: white;\n  border-radius: 20vw; }\n", ""]);
+	exports.push([module.id, "h1 {\n  font-size: 200px;\n  font-family: \"Megrim\", cursive;\n  margin-top: 10px;\n  margin: auto;\n  color: white; }\n\nh2 {\n  font-size: 30px;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  margin-top: 40px;\n  color: white; }\n\ninput {\n  height: 50px;\n  width: 350px;\n  border-width: medium;\n  border-radius: 30vw;\n  border-style: solid; }\n\nbody {\n  display: inline;\n  text-align: center;\n  background-color: black; }\n\nul {\n  list-style-type: none;\n  width: 500px;\n  margin: auto; }\n\ndiv {\n  margin: auto; }\n\ninput,\ninput::-webkit-input-placeholder {\n  font-size: 40px;\n  text-align: center;\n  font-family: \"Open Sans Condensed\", sans-serif; }\n\ninput[type=number]::-webkit-inner-spin-button {\n  -webkit-appearance: none; }\n\nbutton,\nbutton {\n  height: 40px;\n  width: 120px;\n  margin-top: 30px;\n  margin-bottom: 40px;\n  border-width: medium;\n  border: none;\n  border-radius: 30vw;\n  border-style: solid;\n  background-color: black;\n  color: white;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  font-size: 15px; }\n\nbutton:hover {\n  background-color: white;\n  color: black; }\n\nli {\n  font-size: 40px;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  padding: 20px;\n  margin-right: 7%;\n  border: solid;\n  margin-top: 20px;\n  background-color: white;\n  border-radius: 5vw; }\n", ""]);
 
 	// exports
 

@@ -68,6 +68,11 @@ button {
   font-size: 15px;
 }
 
+button:hover {
+  background-color: white;
+  color: black;
+}
+
 li {
   font-size: 40px;
   font-family: $font;
@@ -76,7 +81,7 @@ li {
   border: solid;
   margin-top: 20px;
   background-color: white;
-  border-radius: 20vw;
+  border-radius: 5vw;
 }
 
 
