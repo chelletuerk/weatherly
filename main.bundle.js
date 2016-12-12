@@ -29433,9 +29433,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(329);
+	var _ThreeDayForecast = __webpack_require__(476);
 
-	var _reactDom2 = _interopRequireDefault(_reactDom);
+	var _ThreeDayForecast2 = _interopRequireDefault(_ThreeDayForecast);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29447,7 +29447,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	__webpack_require__(476);
+	__webpack_require__(477);
 
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -29464,47 +29464,88 @@
 	    };
 	    _this.handleChange = _this.handleChange.bind(_this);
 	    _this.submitLocation = _this.submitLocation.bind(_this);
+	    _this.clearDOM = _this.clearDOM.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(App, [{
 	    key: 'handleChange',
 	    value: function handleChange(e) {
-	      this.setState({ location: e.target.value });
+	      var location = e.target.value;
+	      if (location.length > 5) return;
+	      return this.setState({ location: location });
+	    }
+	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var local = JSON.parse(localStorage.getItem('weatherInfo'));
+	      if (!local) return;
+	      var location = local.location,
+	          weather = local.weather,
+	          weatherLocationList = local.weatherLocationList;
+
+	      return this.setState({ location: location, weather: weather, weatherLocationList: weatherLocationList });
 	    }
 	  }, {
 	    key: 'submitLocation',
 	    value: function submitLocation() {
+	      var _this2 = this;
+
 	      var _state = this.state,
 	          location = _state.location,
 	          weatherLocationList = _state.weatherLocationList,
 	          weather = _state.weather;
 
-	      jQuery.getJSON('https://api.wunderground.com/api/cfa60fe930db844e/forecast/q/' + this.state.location + '.json').then(function (data) {
-	        console.log(data);
-	        var newWeather = data.forecast.txt_forecast.forecastday[0].fcttext;
-	        if (!weather) {
-	          alert('Invalid Zip Code');
+	      var url = 'https://api.wunderground.com/api/cfa60fe930db844e/forecast/q/';
+
+	      jQuery.getJSON('' + url + this.state.location + '.json').success(function (data) {
+	        if (!data.forecast) {
+	          _this2.setState({ location: '' });
+	          return alert("INVALID ZIP CODE");
 	        }
-	        // localStorage.setItem('newWeather')
-	        this.setState({
+
+	        var threeDayForecast = data.forecast.txt_forecast.forecastday;
+
+	        localStorage.setItem('weatherInfo', JSON.stringify({
+	          location: '',
+	          weather: [[threeDayForecast].concat(_toConsumableArray(weather))[0]],
+	          weatherLocationList: [location].concat(_toConsumableArray(weatherLocationList))
+	        }));
+
+	        _this2.setState({
 	          location: '',
 	          weatherLocationList: [location].concat(_toConsumableArray(weatherLocationList)),
-	          weather: [newWeather].concat(_toConsumableArray(weather)) });
-	      }.bind(this));
+	          weather: [threeDayForecast].concat(_toConsumableArray(weather))
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'clearDOM',
+	    value: function clearDOM() {
+	      this.setState({ weather: [] });
+	      this.clearLocalStorage();
+	    }
+	  }, {
+	    key: 'clearLocalStorage',
+	    value: function clearLocalStorage() {
+	      window.localStorage.clear();
 	    }
 	  }, {
 	    key: 'loadList',
 	    value: function loadList() {
-	      var _this2 = this;
+	      var _this3 = this;
 
-	      return this.state.weatherLocationList.map(function (location, i) {
+	      return this.state.weather.map(function (threeDayForecast, i) {
 	        return _react2.default.createElement(
-	          'li',
+	          'div',
 	          { key: i },
-	          location,
-	          _react2.default.createElement('br', null),
-	          _this2.state.weather[i]
+	          _react2.default.createElement(
+	            'h1',
+	            { className: 'code' },
+	            _this3.state.weatherLocationList[i]
+	          ),
+	          _react2.default.createElement('hr', null),
+	          _react2.default.createElement(_ThreeDayForecast2.default, { threeDayForecast: threeDayForecast })
 	        );
 	      });
 	    }
@@ -29514,6 +29555,18 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          'weathrly'
+	        ),
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'weather...',
+	          _react2.default.createElement('br', null),
+	          'you like it, or not'
+	        ),
 	        _react2.default.createElement('input', {
 	          type: 'number',
 	          placeholder: 'Zip Code',
@@ -29529,10 +29582,13 @@
 	          'Submit'
 	        ),
 	        _react2.default.createElement(
-	          'ul',
-	          null,
-	          this.loadList()
-	        )
+	          'button',
+	          {
+	            id: 'clear',
+	            onClick: this.clearDOM },
+	          'Clear'
+	        ),
+	        this.loadList()
 	      );
 	    }
 	  }]);
@@ -29546,13 +29602,83 @@
 /* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ThreeDayForecast = function (_React$Component) {
+	  _inherits(ThreeDayForecast, _React$Component);
+
+	  function ThreeDayForecast() {
+	    _classCallCheck(this, ThreeDayForecast);
+
+	    return _possibleConstructorReturn(this, (ThreeDayForecast.__proto__ || Object.getPrototypeOf(ThreeDayForecast)).call(this));
+	  }
+
+	  _createClass(ThreeDayForecast, [{
+	    key: 'loadThreeDay',
+	    value: function loadThreeDay() {
+	      return this.props.threeDayForecast.map(function (e, i) {
+	        return _react2.default.createElement(
+	          'ul',
+	          { key: i },
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement('img', { src: e.icon_url, className: 'image' }),
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              e.title
+	            ),
+	            _react2.default.createElement(
+	              'h4',
+	              null,
+	              e.fcttext
+	            )
+	          )
+	        );
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        this.loadThreeDay()
+	      );
+	    }
+	  }]);
+
+	  return ThreeDayForecast;
+	}(_react2.default.Component);
+
+	module.exports = ThreeDayForecast;
+
+/***/ },
+/* 477 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(477);
+	var content = __webpack_require__(478);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(479)(content, {});
+	var update = __webpack_require__(480)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -29569,21 +29695,21 @@
 	}
 
 /***/ },
-/* 477 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(478)();
+	exports = module.exports = __webpack_require__(479)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "h1 {\n  font-size: 200px;\n  font-family: \"Megrim\", cursive;\n  margin-top: 10px;\n  margin: auto;\n  color: white; }\n\nh2 {\n  font-size: 30px;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  margin-top: 40px;\n  color: white; }\n\ninput {\n  height: 50px;\n  width: 350px;\n  border-width: medium;\n  border-radius: 30vw;\n  border-style: solid; }\n\nbody {\n  display: inline;\n  text-align: center;\n  background-color: black; }\n\nul {\n  list-style-type: none;\n  width: 500px;\n  margin: auto; }\n\ndiv {\n  margin: auto; }\n\ninput,\ninput::-webkit-input-placeholder {\n  font-size: 40px;\n  text-align: center;\n  font-family: \"Open Sans Condensed\", sans-serif; }\n\ninput[type=number]::-webkit-inner-spin-button {\n  -webkit-appearance: none; }\n\nbutton {\n  height: 40px;\n  width: 120px;\n  margin-top: 30px;\n  margin-bottom: 40px;\n  border-width: medium;\n  border: none;\n  border-radius: 30vw;\n  border-style: solid;\n  background-color: black;\n  color: white;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  font-size: 15px; }\n\nbutton:hover {\n  background-color: white;\n  color: black; }\n\nli {\n  font-size: 40px;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  padding: 20px;\n  margin-right: 7%;\n  border: solid;\n  margin-top: 20px;\n  background-color: white;\n  border-radius: 5vw; }\n", ""]);
+	exports.push([module.id, "h1 {\n  font-size: 200px;\n  font-family: \"Megrim\", cursive;\n  margin-top: 10px;\n  margin: auto;\n  color: white; }\n\nh2 {\n  font-size: 30px;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  margin-top: 40px;\n  color: white; }\n\nh3 {\n  margin-top: 0; }\n\n.code {\n  font-size: 50px;\n  font-family: \"Megrim\", cursive;\n  margin-top: 10px;\n  margin: auto;\n  color: white; }\n\ninput {\n  height: 50px;\n  width: 350px;\n  border-width: medium;\n  border-radius: 30vw;\n  border-style: solid; }\n\nbody {\n  display: inline;\n  text-align: center;\n  background-color: black; }\n\nul {\n  list-style-type: none;\n  width: 500px;\n  margin: auto; }\n\ndiv {\n  margin: auto; }\n\ninput,\ninput::-webkit-input-placeholder {\n  font-size: 40px;\n  text-align: center;\n  font-family: \"Open Sans Condensed\", sans-serif; }\n\ninput[type=number]::-webkit-inner-spin-button {\n  -webkit-appearance: none; }\n\nbutton {\n  height: 40px;\n  width: 120px;\n  margin-top: 30px;\n  margin-bottom: 40px;\n  border-width: medium;\n  border: none;\n  border-radius: 30vw;\n  border-style: solid;\n  background-color: black;\n  color: white;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  font-size: 15px;\n  margin: 30px 20px; }\n\nbutton:hover {\n  background-color: white;\n  color: black; }\n\nli {\n  font-size: 28px;\n  font-family: \"Open Sans Condensed\", sans-serif;\n  padding: 20px;\n  margin-right: 7%;\n  border: solid;\n  margin-top: 20px;\n  background-color: white;\n  border-radius: 5vw; }\n\n.image {\n  filter: saturate(0); }\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 478 */
+/* 479 */
 /***/ function(module, exports) {
 
 	/*
@@ -29639,7 +29765,7 @@
 
 
 /***/ },
-/* 479 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
