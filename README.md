@@ -1,4 +1,6 @@
-# React Starter Kit
+# weathrly
+
+This application provides a 3-day weather forecast via the WeatherUnderground API by a user supplying a zip code.  
 
 To install the dependencies:
 
